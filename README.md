@@ -1,5 +1,5 @@
 
-```markdown
+
 # 💊 Smart Medicine Inventory & Order Management System
 
 A full-stack web application built with **Python Flask** that supports both **online** and **offline (phone-based)** medicine ordering. Features dual-role authentication, real-time stock tracking, PDF bill generation, and a modern responsive UI with dark mode.
@@ -194,6 +194,14 @@ This project demonstrates:
 | **Real-world Features** | Offline ordering, ratings, notifications |
 
 ---
+##screenshots:
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/7cd8ce4a-5387-4f12-92ed-7295f383d480" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/249ce13e-e0cc-47b5-88e1-6146d7b14e6b" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/f78886e0-01e4-4aed-9d6f-40f6c16780c9" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/e5a231e4-cd42-44ca-bf07-3f6e70c6460c" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/cc840fef-d5f6-4ea1-8e9f-ef634c053061" />
+<img width="1366" height="768" alt="image" src="https://github.com/user-attachments/assets/eb889957-b1e3-4e64-acd8-8b50ca31a8b2" />
+
 
 ## 🚀 Future Enhancements (Ideas)
 
@@ -240,23 +248,3 @@ Built as a **full-stack portfolio project** showcasing:
 ---
 
 **⭐ If you found this project helpful, give it a star on GitHub!**
-```
-
----
-
-## ✅ WHAT I IMPROVED:
-
-| Section | Before | After |
-|---------|--------|-------|
-| Features | Basic list | Categorized with emojis |
-| Profile features | Missing | Fully documented |
-| Ratings system | Missing | Explained in detail |
-| Password toggle | Missing | Included |
-| Tech Stack | Simple list | Table format with versions |
-| Project Structure | 8 files | All 18 files listed |
-| Database Schema | Not mentioned | 5 tables documented |
-| Learning Outcomes | Not listed | Skill matrix added |
-| Future Enhancements | Not included | 10 ideas listed |
-| Professional touches | Minimal | Badges, emojis, formatting |
-
----
