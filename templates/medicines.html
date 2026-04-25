@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}View Medicines{% endblock %}
+{% block content %}
+<h2>💊 Available Medicines</h2>
+{% if medicines %}
+<div class="card-grid">
+    {% for med in medicines %}
+    <div class="card">
+        <div class="card-header">{{ med.name }}</div>
+        <p>{{ med.description or 'No description' }}</p>
+        <p><strong>Price:</strong> ₹{{ "%.2f"|format(med.price) }}</p>
+        <p><strong>Stock:</strong> {{ med.quantity }}</p>
+        {% if session.user_id and session.role == 'user' %}
+        <form method="POST" action="/order" style="margin-top:1rem;">
+            <input type="hidden" name="medicine_id" value="{{ med.id }}">
+            <div class="form-group">
+                <label>Quantity</label>
+                <input type="number" name="quantity" class="form-control" min="1" max="{{ med.quantity }}" required>
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="text" name="phone" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <textarea name="address" class="form-control" rows="2" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">🛒 Place Order</button>
+        </form>
+        {% elif not session.user_id %}
+        <p style="margin-top:1rem;"><a href="/login" class="btn btn-sm btn-outline">Login to Order</a></p>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No medicines available right now.</p>
+{% endif %}
+{% endblock %}

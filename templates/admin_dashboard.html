@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h2>📊 Admin Dashboard</h2>
+
+{% if low_stock %}
+<div class="alert alert-warning">
+    <strong>⚠️ Low Stock Alert:</strong>
+    {% for med in low_stock %}
+    <span style="margin-right:1rem;">{{ med.name }} ({{ med.quantity }} left)</span>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Quick Actions -->
+<div class="card-grid">
+    <div class="card">
+        <div class="card-header">➕ Add Offline Order</div>
+        <form method="POST" action="/admin/offline-order">
+            <div class="form-group">
+                <label>Customer Name</label>
+                <input type="text" name="customer_name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Medicine</label>
+                <select name="medicine_id" class="form-control" required>
+                    {% for med in medicines %}
+                    <option value="{{ med.id }}">{{ med.name }} ({{ med.quantity }} available)</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Quantity</label>
+                <input type="number" name="quantity" class="form-control" min="1" required>
+            </div>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="text" name="phone" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <textarea name="address" class="form-control" rows="2" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">Record Offline Order</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <div class="card-header">📈 Stats</div>
+        <p>Total Orders: {{ orders|length }}</p>
+        <p>Pending: {% set pending = orders|selectattr('status', 'equalto', 'pending')|list %}{{ pending|length }}</p>
+        <p>Low Stock Items: {{ low_stock|length }}</p>
+    </div>
+</div>
+
+<h3 style="margin:2rem 0 1rem;">📋 All Orders</h3>
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>#</th><th>Customer</th><th>Medicine</th><th>Qty</th><th>Type</th><th>Status</th><th>Action</th><th>Bill</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in orders %}
+            <tr>
+                <td>{{ o.id }}</td>
+                <td>{{ o.customer_name }}</td>
+                <td>{{ o.medicine_name }}</td>
+                <td>{{ o.quantity }}</td>
+                <td>{% if o.is_offline_order %}📞 Offline{% else %}🌐 Online{% endif %}</td>
+                <td>
+                    <form method="POST" action="/admin/update-order-status/{{ o.id }}" style="display:flex; gap:0.3rem;">
+                        <select name="status" class="form-control" style="width:auto;">
+                            <option value="pending" {% if o.status=='pending' %}selected{% endif %}>Pending</option>
+                            <option value="processing" {% if o.status=='processing' %}selected{% endif %}>Processing</option>
+                            <option value="completed" {% if o.status=='completed' %}selected{% endif %}>Completed</option>
+                            <option value="cancelled" {% if o.status=='cancelled' %}selected{% endif %}>Cancelled</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                    </form>
+                </td>
+               <td>
+    <div style="display:flex; gap:0.3rem; flex-wrap:wrap;">
+        {% if not o.bill_path %}
+        <a href="/admin/generate-bill/{{ o.id }}" 
+           class="btn btn-sm btn-warning" 
+           onclick="return confirmAction('Generate bill for Order #{{ o.id }}?')">
+           🧾 Generate
+        </a>
+        {% else %}
+        <a href="/admin/download-bill/{{ o.id }}" class="btn btn-sm btn-success" title="Download PDF">
+            📥 Download
+        </a>
+        <a href="/admin/preview-bill/{{ o.id }}" class="btn btn-sm btn-outline" target="_blank" title="Preview in browser">
+            👁️ View
+        </a>
+        {% endif %}
+    </div>
+</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

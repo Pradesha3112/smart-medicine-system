@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard{% endblock %}
+{% block content %}
+<h2>👋 Welcome, {{ session.name }}</h2>
+
+{% if notifications %}
+<div class="alert alert-warning">
+    <strong>🔔 Notifications:</strong>
+    {% for n in notifications %}
+    <div style="margin:0.5rem 0;">
+        {{ n.message }} - <small>{{ n.created_at }}</small>
+        <a href="/mark-notification-read/{{ n.id }}" class="btn btn-sm btn-outline">Mark Read</a>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<h3 style="margin:2rem 0 1rem;">📋 My Orders</h3>
+{% if orders %}
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Order #</th><th>Medicine</th><th>Quantity</th><th>Phone</th><th>Status</th><th>Date</th><th>Bill</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in orders %}
+            <tr>
+                <td>#{{ o.id }}</td>
+                <td>{{ o.medicine_name }}</td>
+                <td>{{ o.quantity }}</td>
+                <td>{{ o.phone }}</td>
+                <td><span class="badge badge-{{ o.status }}">{{ o.status }}</span></td>
+                <td>{{ o.order_date }}</td>
+           <td>
+    {% if o.bill_path %}
+    <a href="/user/download-bill/{{ o.id }}" class="btn btn-sm btn-success">
+        📄 Download Bill
+    </a>
+    {% else %}
+    <span class="badge badge-pending">Awaiting</span>
+    {% endif %}
+</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<p>No orders yet. <a href="/medicines">Browse medicines</a></p>
+{% endif %}
+{% endblock %}

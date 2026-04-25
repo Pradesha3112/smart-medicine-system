@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Notifications - Admin{% endblock %}
+{% block content %}
+<h2>🔔 All Notifications</h2>
+<p style="color:var(--text-secondary); margin-bottom:2rem;">Track all user notifications and order updates</p>
+
+{% if notifications %}
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Message</th>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for notif in notifications %}
+            <tr>
+                <td>#{{ notif.id }}</td>
+                <td>
+                    {% if notif.user_name %}
+                        {{ notif.user_name }}
+                    {% else %}
+                        <span style="color:var(--text-secondary);">System</span>
+                    {% endif %}
+                </td>
+                <td>{{ notif.message }}</td>
+                <td>
+                    {% if notif.is_read %}
+                    <span class="badge badge-completed">Read</span>
+                    {% else %}
+                    <span class="badge badge-pending">Unread</span>
+                    {% endif %}
+                </td>
+                <td>{{ notif.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card" style="text-align:center; padding:3rem;">
+    <p style="font-size:3rem;">📭</p>
+    <h3>No Notifications Yet</h3>
+    <p style="color:var(--text-secondary);">Notifications will appear here when users place orders or receive updates.</p>
+</div>
+{% endif %}
+{% endblock %}

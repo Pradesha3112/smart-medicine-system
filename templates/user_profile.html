@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}My Profile - SmartMeds{% endblock %}
+{% block content %}
+
+<!-- Profile Header -->
+<div class="profile-header">
+    <div class="profile-avatar">{{ user.name[0] | upper }}</div>
+    <h2>{{ user.name }}</h2>
+    <p>{{ user.email }} | {{ user.phone }}</p>
+    <p>{{ user.address }}</p>
+    <a href="/profile/edit" class="btn btn-outline" style="color:white; border-color:white; margin-top:0.5rem;">✏️ Edit Profile</a>
+</div>
+
+<!-- Stats Cards -->
+<div class="profile-stats">
+    <div class="stat-card">
+        <div class="stat-value">{{ total_orders }}</div>
+        <div class="stat-label">Total Orders</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">₹{{ "%.0f"|format(total_spent) }}</div>
+        <div class="stat-label">Total Spent</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ pending_orders }}</div>
+        <div class="stat-label">Pending</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ completed_orders }}</div>
+        <div class="stat-label">Completed</div>
+    </div>
+</div>
+
+<!-- Order History -->
+<h3>📋 Order History</h3>
+{% if orders %}
+<div class="table-container" style="margin-bottom:2rem;">
+    <table>
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Medicine</th>
+                <th>Qty</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Bill</th>
+                <th>Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for o in orders %}
+            <tr>
+                <td>#{{ o.id }}</td>
+                <td>{{ o.medicine_name }}</td>
+                <td>{{ o.quantity }}</td>
+                <td>₹{{ "%.2f"|format(o.price * o.quantity) }}</td>
+                <td><span class="badge badge-{{ o.status }}">{{ o.status }}</span></td>
+                <td>{{ o.order_date[:10] if o.order_date else 'N/A' }}</td>
+                <td>
+                    {% if o.bill_path %}
+                    <a href="/user/download-bill/{{ o.id }}" class="btn btn-sm btn-success">📄</a>
+                    {% else %}
+                    <span style="color:var(--text-secondary);">N/A</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if o.status == 'completed' %}
+                    <a href="/rate-medicine/{{ o.id }}" class="btn btn-sm btn-warning">⭐ Rate</a>
+                    {% else %}
+                    <span style="color:var(--text-secondary);">—</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card" style="text-align:center; padding:2rem; margin-bottom:2rem;">
+    <p>No orders yet. <a href="/medicines">Start ordering!</a></p>
+</div>
+{% endif %}
+
+<!-- My Ratings -->
+<h3>⭐ My Ratings & Reviews</h3>
+{% if ratings %}
+<div style="margin-bottom:2rem;">
+    {% for r in ratings %}
+    <div class="review-card">
+        <div class="review-header">
+            <strong>{{ r.medicine_name }}</strong>
+            <div class="review-stars">
+                {% for i in range(5) %}
+                    {% if i < r.rating %}★{% else %}☆{% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% if r.comment %}
+        <div class="review-comment">"{{ r.comment }}"</div>
+        {% endif %}
+        <small style="color:var(--text-secondary);">{{ r.created_at }}</small>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card" style="text-align:center; padding:2rem;">
+    <p>No ratings yet. Complete an order to rate medicines!</p>
+</div>
+{% endif %}
+
+{% endblock %}

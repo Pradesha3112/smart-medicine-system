@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Home - SmartMeds{% endblock %}
+{% block content %}
+<div class="hero">
+    <h1>💊 Smart Medicine Inventory System</h1>
+    <p>Order medicines online or via phone call. Fast, reliable, and smart.</p>
+    <a href="/medicines" class="btn btn-primary">Browse Medicines</a>
+    {% if not session.user_id %}
+    <a href="/signup" class="btn btn-outline" style="color:white; border-color:white;">Create Account</a>
+    {% endif %}
+</div>
+
+<div class="card-grid">
+    <div class="card">
+        <div class="card-header">🛒 Easy Online Ordering</div>
+        <p>Browse our catalog and order medicines from the comfort of your home.</p>
+    </div>
+    <div class="card">
+        <div class="card-header">📞 Phone Order Support</div>
+        <p>No internet? Call us, and our admin will record your order offline.</p>
+    </div>
+    <div class="card">
+        <div class="card-header">📋 Real-time Tracking</div>
+        <p>Get notified about your order status - from pending to delivered.</p>
+    </div>
+</div>
+
+<div style="text-align:center; margin:3rem 0;">
+    <h2>How It Works</h2>
+    <div class="card-grid">
+        <div class="card">
+            <h3>1. Browse</h3>
+            <p>Look through our medicine list with prices</p>
+        </div>
+        <div class="card">
+            <h3>2. Order</h3>
+            <p>Select medicine, enter quantity & address</p>
+        </div>
+        <div class="card">
+            <h3>3. Track</h3>
+            <p>Receive real-time notifications & bills</p>
+        </div>
+    </div>
+    <a href="/how-to-order" class="btn btn-outline" style="margin-top:1rem;">Learn More</a>
+</div>
+{% endblock %}

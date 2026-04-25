@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Manage Stock - Admin{% endblock %}
+{% block content %}
+<h2>📦 Medicine Stock Management</h2>
+
+<!-- Add/Update Stock Form -->
+<div class="card" style="margin-bottom:2rem;">
+    <div class="card-header">➕ Add New Medicine / Update Stock</div>
+    <form method="POST">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="form-group">
+                <label>Medicine Name</label>
+                <input type="text" name="name" class="form-control" required placeholder="Paracetamol 500mg">
+            </div>
+            <div class="form-group">
+                <label>Price (₹)</label>
+                <input type="number" name="price" class="form-control" step="0.01" required placeholder="49.99">
+            </div>
+            <div class="form-group">
+                <label>Quantity to Add</label>
+                <input type="number" name="quantity" class="form-control" min="0" required placeholder="100">
+            </div>
+            <div class="form-group">
+                <label>Min Stock Alert</label>
+                <input type="number" name="min_stock" class="form-control" min="1" value="5" required placeholder="5">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" class="form-control" rows="2" placeholder="Pain reliever, fever reducer"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">💾 Save Medicine</button>
+    </form>
+</div>
+
+<!-- Current Stock Table -->
+<h3>📋 Current Stock</h3>
+{% if medicines %}
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price (₹)</th>
+                <th>Quantity</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for med in medicines %}
+            <tr>
+                <td>{{ med.id }}</td>
+                <td><strong>{{ med.name }}</strong></td>
+                <td>{{ med.description or 'N/A' }}</td>
+                <td>₹{{ "%.2f"|format(med.price) }}</td>
+                <td>{{ med.quantity }}</td>
+                <td>
+                    {% if med.quantity <= med.min_stock %}
+                    <span class="badge badge-cancelled">⚠️ Low Stock</span>
+                    {% elif med.quantity == 0 %}
+                    <span class="badge badge-cancelled">❌ Out of Stock</span>
+                    {% else %}
+                    <span class="badge badge-completed">✅ In Stock</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="card" style="text-align:center; padding:2rem;">
+    <p>No medicines added yet. Use the form above to add stock.</p>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}How to Order - SmartMeds{% endblock %}
+{% block content %}
+<h2 style="text-align:center; margin-bottom:2rem;">📖 How to Order Medicines</h2>
+
+<div class="card-grid">
+    <!-- Online Method -->
+    <div class="card">
+        <div class="card-header">🌐 Online Method (For Users)</div>
+        <div style="padding:1rem;">
+            <h3 style="color:var(--accent);">Step 1:</h3>
+            <p>Create an account or login to your existing account.</p>
+            
+            <h3 style="color:var(--accent);">Step 2:</h3>
+            <p>Go to "View Medicines" and browse available stock with prices.</p>
+            
+            <h3 style="color:var(--accent);">Step 3:</h3>
+            <p>Select the medicine you need, enter quantity, phone number, and delivery address.</p>
+            
+            <h3 style="color:var(--accent);">Step 4:</h3>
+            <p>Click "Place Order" – done! Track status in your dashboard.</p>
+            
+            <h3 style="color:var(--accent);">Step 5:</h3>
+            <p>Receive notifications when your order is processed and bill is ready.</p>
+        </div>
+        {% if session.user_id and session.role == 'user' %}
+        <a href="/medicines" class="btn btn-primary" style="width:100%; margin-top:1rem;">Browse Medicines Now</a>
+        {% elif not session.user_id %}
+        <a href="/signup" class="btn btn-primary" style="width:100%; margin-top:1rem;">Create Account & Order</a>
+        {% endif %}
+    </div>
+
+    <!-- Offline Method -->
+    <div class="card">
+        <div class="card-header">📞 Offline Method (Phone Order)</div>
+        <div style="padding:1rem;">
+            <h3 style="color:var(--accent);">Step 1:</h3>
+            <p>Call our pharmacy at <strong>+91 1234567890</strong></p>
+            
+            <h3 style="color:var(--accent);">Step 2:</h3>
+            <p>Tell us which medicine you need and your address.</p>
+            
+            <h3 style="color:var(--accent);">Step 3:</h3>
+            <p>Our admin records your order in the system manually.</p>
+            
+            <h3 style="color:var(--accent);">Step 4:</h3>
+            <p>You receive an SMS/call confirmation with order details.</p>
+            
+            <h3 style="color:var(--accent);">Step 5:</h3>
+            <p>Medicine delivered to your doorstep. Pay on delivery!</p>
+        </div>
+        <div class="alert" style="background:var(--bg-primary); margin-top:1rem;">
+            <strong>💡 Note:</strong> Offline orders are perfect for elderly patients or those without internet access.
+        </div>
+    </div>
+</div>
+
+<div style="text-align:center; margin:3rem 0;">
+    <h3>🕐 Business Hours</h3>
+    <p>Monday - Saturday: 8:00 AM to 10:00 PM</p>
+    <p>Sunday: 9:00 AM to 6:00 PM</p>
+    <p style="margin-top:1rem; color:var(--accent);">🚚 Free delivery on orders above ₹500!</p>
+</div>
+{% endblock %}

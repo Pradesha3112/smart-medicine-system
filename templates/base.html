@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Smart Medicine Inventory{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="/" class="logo">💊 SmartMeds</a>
+        <ul class="nav-links">
+            {% if not session.user_id %}
+                <!-- PUBLIC NAVBAR -->
+                <li><a href="/">Home</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/how-to-order">How to Order</a></li>
+                <li><a href="/medicines">View Medicines</a></li>
+                <li><a href="/login">Login</a></li>
+            {% elif session.role == 'admin' %}
+                <!-- ADMIN NAVBAR -->
+                <li><a href="/admin">Dashboard</a></li>
+                <li><a href="/admin/stock">Manage Stock</a></li>
+                <li><a href="/admin/notifications">Notifications</a></li>
+                <!-- Settings Dropdown -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">
+                        👤 {{ session.name }} ▾
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/admin/profile">👤 My Profile</a></li>
+                        <li><a href="/profile/edit">⚙️ Edit Profile</a></li>
+                        <li><a href="/logout">🚪 Logout</a></li>
+                    </ul>
+                </li>
+            {% else %}
+                <!-- USER NAVBAR -->
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/how-to-order">How to Order</a></li>
+                <li><a href="/medicines">View Medicines</a></li>
+                <!-- Settings Dropdown -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">
+                        👤 {{ session.name }} ▾
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/user/profile">👤 My Profile</a></li>
+                        <li><a href="/profile/edit">⚙️ Edit Profile</a></li>
+                        <li><a href="/logout">🚪 Logout</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+            <li class="theme-toggle">
+                <button id="themeToggle" aria-label="Toggle theme">
+                    <span class="sun-icon">☀️</span>
+                    <span class="moon-icon">🌙</span>
+                </button>
+            </li>
+        </ul>
+        <div class="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>💊 SmartMeds</h3>
+                <p>Your trusted online medicine inventory system.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/medicines">Medicines</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p>📞 +91 1234567890</p>
+                <p>📧 support@smartmeds.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 SmartMeds. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
