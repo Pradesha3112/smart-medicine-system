@@ -774,7 +774,29 @@ def rate_medicine(order_id):
     return render_template('rate_medicine.html', order=order, existing=existing)
 
     
+# ============================================
+# RUN APPLICATION (Production Ready)
+# ============================================
 
 if __name__ == '__main__':
+    import os
+    
+    # Initialize database
     init_db()
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    
+    # Get port from Render environment variable
+    port = int(os.environ.get('PORT', 5000))
+    
+    print("=" * 60)
+    print("🏥 MediStock Pro - Medical Inventory System")
+    print("=" * 60)
+    print(f"🚀 Server starting on port {port}...")
+    print(f"📍 Binding to 0.0.0.0:{port}")
+    print("📱 Web Dashboard: Available after deployment")
+    print("📡 REST API: /api/medicines")
+    print("👤 Demo User: user / user123")
+    print("👑 Demo Admin: admin / admin123")
+    print("=" * 60)
+    
+    # Critical: host='0.0.0.0' for Render
+    app.run(host='0.0.0.0', port=port, debug=False)
